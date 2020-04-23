@@ -373,7 +373,14 @@ class IPCClient(object):
 
         self._closing = True
 
-        log.debug("Closing %s instance", self.__class__.__name__)
+        try:
+            log.debug("Closing %s instance", self.__class__.__name__)
+        except NameError as e:
+            # Logging after the destructor was called can lead to a race condition
+            if str(e) == "name '__salt_system_encoding__' is not defined":
+                pass
+            else:
+                raise
 
         if self.stream is not None and not self.stream.closed():
             try:
