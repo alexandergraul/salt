@@ -75,6 +75,7 @@ import fnmatch
 import logging
 import os
 import re
+from collections.abc import Mapping
 
 import salt.utils.pkg
 import salt.utils.platform
@@ -83,7 +84,6 @@ from salt.exceptions import CommandExecutionError, MinionError, SaltInvocationEr
 from salt.modules.pkg_resource import _repack_pkgs
 from salt.output import nested
 from salt.utils.functools import namespaced_function as _namespaced_function
-from salt.utils.odict import OrderedDict as _OrderedDict
 
 # pylint: disable=invalid-name
 _repack_pkgs = _namespaced_function(_repack_pkgs, globals())
@@ -552,7 +552,7 @@ def _find_install_targets(
     if isinstance(pkg_verify, list) and any(
         x.get("ignore_types") is not None
         for x in pkg_verify
-        if isinstance(x, _OrderedDict) and "ignore_types" in x
+        if isinstance(x, Mapping) and "ignore_types" in x
     ):
         ignore_types = next(
             x.get("ignore_types") for x in pkg_verify if "ignore_types" in x
@@ -564,7 +564,7 @@ def _find_install_targets(
     if isinstance(pkg_verify, list) and any(
         x.get("verify_options") is not None
         for x in pkg_verify
-        if isinstance(x, _OrderedDict) and "verify_options" in x
+        if isinstance(x, Mapping) and "verify_options" in x
     ):
         verify_options = next(
             x.get("verify_options") for x in pkg_verify if "verify_options" in x
@@ -2065,7 +2065,7 @@ def installed(
     if isinstance(pkg_verify, list) and any(
         x.get("ignore_types") is not None
         for x in pkg_verify
-        if isinstance(x, _OrderedDict) and "ignore_types" in x
+        if isinstance(x, Mapping) and "ignore_types" in x
     ):
         ignore_types = next(
             x.get("ignore_types") for x in pkg_verify if "ignore_types" in x
@@ -2077,7 +2077,7 @@ def installed(
     if isinstance(pkg_verify, list) and any(
         x.get("verify_options") is not None
         for x in pkg_verify
-        if isinstance(x, _OrderedDict) and "verify_options" in x
+        if isinstance(x, Mapping) and "verify_options" in x
     ):
         verify_options = next(
             x.get("verify_options") for x in pkg_verify if "verify_options" in x
